@@ -1,7 +1,13 @@
 #!/bin/bash
 
 # Do not change!
-VERSION="1.0"
+VERSION="1.1"
+
+# Check for sudo privileges
+if [ "$EUID" -ne 0 ]; then
+    echo "This script must be run as root or with sudo." 
+    exit 1
+fi
 
 # Extract distribution name and version from /etc/os-release
 if [ -f /etc/os-release ]; then

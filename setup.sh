@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Do not change!
-VERSION="1.1"
+VERSION="1.1.1"
 
 # Check for sudo privileges
 if [ "$EUID" -ne 0 ]; then

@@ -35,6 +35,20 @@ if [ -f "/etc/vega-version" ]; then
     cat /etc/vega-version
 fi
 echo
+# Check for a newer version
+LATEST_VERSION=$(curl -s "https://raw.githubusercontent.com/BoredKevin/VegaSetup/main/version")
+if [[ "$LATEST_VERSION" && "$LATEST_VERSION" != "$VERSION" ]]; then
+    echo "######################################################################################"
+    echo
+    echo "A newer version ($LATEST_VERSION) of the script is available. You are currently using version $VERSION"
+    echo "Get the latest version by running the following command:"
+    echo
+    echo "bash <(curl -s https://raw.githubusercontent.com/BoredKevin/VegaSetup/main/setup.sh)"
+    echo
+    echo "######################################################################################"
+fi
+echo Press CTRL+C or Command+C at anytime to exit
+echo
 # Prompt for hostname
 read -p "Enter the new hostname (leave blank if unchanged): " NEW_HOSTNAME
 NEW_HOSTNAME=${NEW_HOSTNAME:-$(hostname)}

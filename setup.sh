@@ -12,6 +12,12 @@ else
     DISTRO_VERSION="Unknown"
 fi
 
+# Check for a newer version
+LATEST_VERSION=$(curl -s "https://raw.githubusercontent.com/BoredKevin/VegaSetup/test/version")
+if [[ "$LATEST_VERSION" && "$LATEST_VERSION" != "$VERSION" ]]; then
+    echo "A newer version ($LATEST_VERSION) of the script is available. You are currently using version $VERSION."
+fi
+
 # Ascii art generated from patorjk.com using the Jerusalem font
 # Jerusalem by Gedaliah Friedenberg - based on Standard by G. Chappell & Ian Chai
 # Questions and comments regarding jerusalem.flf to gfrieden@nyx.cs.du.edu

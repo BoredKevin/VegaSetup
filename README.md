@@ -17,3 +17,8 @@ To download and run the setup script, execute the following one-liner in your te
 
 ```bash
 bash <(curl -s https://raw.githubusercontent.com/BoredKevin/VegaSetup/main/setup.sh)
+```
+
+## License
+
+This work is licensed under the GNU General Public License v3.0

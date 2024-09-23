@@ -156,10 +156,6 @@ fi
 #        echo "Failed to delete the user 'vega'."
 #    fi
 #fi
-    else
-        echo "Failed to delete the user 'vega'."
-    fi
-fi
 
 # Replace the /etc/motd with the new message
 cat <<EOL > /etc/motd

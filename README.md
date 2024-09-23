@@ -16,7 +16,7 @@ This script is meant to be used with the Vega Template Image (coming soon)
 To download and run the setup script, execute the following one-liner in your terminal:
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/BoredKevin/VegaSetup/main/setup.sh)
+bash <(curl -s https://raw.githubusercontent.com/BoredKevin/VegaSetup/main/vegasetup.sh)
 ```
 
 ## License

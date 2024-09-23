@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Do not change!
-VERSION="1.2.0"
+VERSION="1.2.1"
 
 # Check for sudo privileges
 if [ "$EUID" -ne 0 ]; then
@@ -116,6 +116,11 @@ echo "Do you want to enable command logging for all users? This will log every c
 read -p "Enable command logging? (Y/n): " logging_choice
 logging_choice=${logging_choice:-y}
 
+# Ask if the user wants to disable the root user
+echo "Do you want to disable the root user? This will prevent users from using sudo su - to enter the root account."
+read -p "Disable root user? (Y/n): " disable_root_choice
+disable_root_choice=${disable_root_choice:-n}
+
 if [[ "$update_choice" =~ ^[Yy]$ ]]; then
     echo "Updating packages..."
     sudo apt update && sudo apt upgrade -y
@@ -187,6 +192,15 @@ if [[ "$logging_choice" =~ ^[Yy]$ ]]; then
     echo "Command logging is now enabled for all users."
 else
     echo "Skipping command logging setup."
+fi
+
+if [[ "$disable_root_choice" =~ ^[Yy]$ ]]; then
+    echo "Disabling the root user..."
+    # Logic to disable the root user goes here
+    sed -i 's|^root:\(.*\):/bin/bash|root:\1:/sbin/nologin|' /etc/passwd
+    echo "Root user has been disabled."
+else
+    echo "Skipping root user disable."
 fi
 
 # Replace the /etc/motd with the new message

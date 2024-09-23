@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Do not change!
-VERSION="1.2.1"
+VERSION="1.2.2"
 
 # Check for sudo privileges
 if [ "$EUID" -ne 0 ]; then
@@ -168,6 +168,7 @@ fi
 #fi
 
 if [[ "$logging_choice" =~ ^[Yy]$ ]]; then
+    apt install rsyslog
     echo "Setting up command logging for all users..."
 
     # Create rsyslog configuration to log shell commands

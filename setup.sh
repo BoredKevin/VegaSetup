@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Do not change!
-VERSION="1.1.1"
+VERSION="1.1.2"
 
 # Check for sudo privileges
 if [ "$EUID" -ne 0 ]; then
@@ -145,13 +145,17 @@ else
     echo "Warning: No public key provided. SSH password authentication will remain enabled."
 fi
 
-# Check if the user "vega" exists
-if id "vega" &>/dev/null; then
-    echo "User 'vega' exists. Deleting the user and its home directory..."
-    # Delete the "vega" user and its home directory
-    userdel -f -r vega
-    if [ $? -eq 0 ]; then
-        echo "User 'vega' successfully deleted."
+## Check if the user "vega" exists
+#if [ -f "/etc/vega-version" ]; then
+#    echo "You are using the Vega Image Template, deleting the default user and its home directory..."
+#    # Delete the "vega" user and its home directory
+#    userdel -f -r vega
+#    if [ $? -eq 0 ]; then
+#        echo "User 'vega' successfully deleted."
+#    else
+#        echo "Failed to delete the user 'vega'."
+#    fi
+#fi
     else
         echo "Failed to delete the user 'vega'."
     fi

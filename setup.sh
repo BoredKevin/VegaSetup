@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Do not change!
-VERSION="1.1.2"
+VERSION="1.2.0"
 
 # Check for sudo privileges
 if [ "$EUID" -ne 0 ]; then
@@ -111,6 +111,11 @@ fi
 read -p "Do you want to update the packages? (Y/n): " update_choice
 update_choice=${update_choice:-y}
 
+# Ask if the user wants to enable global command logging
+echo "Do you want to enable command logging for all users? This will log every command executed in the shell for every user."
+read -p "Enable command logging? (Y/n): " logging_choice
+logging_choice=${logging_choice:-y}
+
 if [[ "$update_choice" =~ ^[Yy]$ ]]; then
     echo "Updating packages..."
     sudo apt update && sudo apt upgrade -y
@@ -156,6 +161,33 @@ fi
 #        echo "Failed to delete the user 'vega'."
 #    fi
 #fi
+
+if [[ "$logging_choice" =~ ^[Yy]$ ]]; then
+    echo "Setting up command logging for all users..."
+
+    # Create rsyslog configuration to log shell commands
+    echo 'local6.* /var/log/commands.log' > /etc/rsyslog.d/bash.conf
+
+    # Append logging configuration to /etc/bash.bashrc to affect all users
+    GLOBAL_BASHRC="/etc/bash.bashrc"
+    whoami_logging='whoami="$(whoami)@$(echo $SSH_CONNECTION | awk '\''{print $1}'\'')"'
+    prompt_command='export PROMPT_COMMAND='\''RETRN_VAL=$?;logger -p local6.debug "$whoami [$$]: $(history 1 | sed '\''"s/^[ ]*[0-9]\+[ ]*//"'\'' ) [$RETRN_VAL]"'\'
+
+    # Add logging config to the global bashrc
+    if ! grep -q "logger -p local6.debug" "$GLOBAL_BASHRC"; then
+        echo "$whoami_logging" >> "$GLOBAL_BASHRC"
+        echo "$prompt_command" >> "$GLOBAL_BASHRC"
+        echo "Global command logging enabled for all users."
+    else
+        echo "Command logging is already configured globally."
+    fi
+
+    # Restart rsyslog service to apply logging changes
+    systemctl restart rsyslog
+    echo "Command logging is now enabled for all users."
+else
+    echo "Skipping command logging setup."
+fi
 
 # Replace the /etc/motd with the new message
 cat <<EOL > /etc/motd
